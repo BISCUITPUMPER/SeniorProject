@@ -1,17 +1,16 @@
 package driver;
 
 import java.io.IOException;
-import java.net.UnknownHostException;
 import java.util.Scanner;
 
 import client.Client;
 
 public class CommandLineClient
 {
-	public static void main(String[] args)
+	public static void main(String[] args) throws IOException
 	{
 		Scanner reader = new Scanner(System.in);
-		Client client;
+		Client client = null;
 		try 
 		{
 			client = new Client(reader.nextLine(), reader.nextInt());
@@ -21,5 +20,6 @@ public class CommandLineClient
 			System.err.println("Something unexpected has occured!");
 			e.printStackTrace();
 		}
+		client.sendCommand("MESG~HELLO");
 	}
 }
