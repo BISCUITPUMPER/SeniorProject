@@ -5,7 +5,7 @@ import java.io.IOException;
 import java.io.PrintWriter;
 import java.net.ServerSocket;
 import java.net.Socket;
-import shared.StatusCodes;
+import shared.StatusCode;
 
 public class Server 
 {
@@ -27,9 +27,9 @@ public class Server
 		while (client.isBound())
 		{
 			cmd = in.readLine();
-			int result = parseCommand(cmd);
-			System.out.printf("Sending %d back to client", result);
-			out.write(result);
+			StatusCode result = parseCommand(cmd);
+			System.out.printf("Sending the response message %s with the status code of %d back to client", result);
+			out.write(result.statusCode);
 		}
 	}
 	
@@ -39,9 +39,9 @@ public class Server
 	 * @param cmd (String) Command to be executed
 	 * @return (int) Status code from command execution
 	 */
-	private int parseCommand(String cmd)
+	private StatusCode parseCommand(String cmd)
 	{
-		return StatusCodes.NO_OPERATION.statusCode;
+		return StatusCode.NO_OPERATION;
 	}
 
 }
