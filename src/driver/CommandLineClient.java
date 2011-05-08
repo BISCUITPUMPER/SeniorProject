@@ -21,6 +21,7 @@ public class CommandLineClient
 			e.printStackTrace();
 		}
 		reader.nextLine();
+		System.out.println("sending message");
 		client.sendCommand("MESG~HELLO");
 	}
 }

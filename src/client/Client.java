@@ -5,7 +5,10 @@ package client;
 
 //Socket Class
 import java.net.Socket;
+import java.io.BufferedReader;
 import java.io.IOException;
+import java.io.InputStreamReader;
+import java.io.PrintWriter;
 import java.net.UnknownHostException;
 
 public class Client 
@@ -14,7 +17,8 @@ public class Client
 	private String host;
 	private int port;
 	private Socket sock;
-	
+	private PrintWriter out;
+	private BufferedReader in;
 	/**
 	 * Creates a socket to h on port p
 	 * @param h (String) Hostname or IP Address of server 
@@ -27,6 +31,8 @@ public class Client
 		host = h;
 		port = p;
 		sock = new Socket(host, port);
+		out = new PrintWriter(sock.getOutputStream());
+		in = new BufferedReader(new InputStreamReader(sock.getInputStream()));
 	}
 	
 	/**
