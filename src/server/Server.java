@@ -1,16 +1,22 @@
 package server;
 
+import java.io.BufferedReader;
 import java.io.IOException;
+import java.io.PrintWriter;
 import java.net.ServerSocket;
 import java.net.Socket;
+import shared.StatusCodes;
 
 public class Server 
 {
 	private int port;
-	
+	private BufferedReader in;
+	private PrintWriter out;
 	public Server(int p)
 	{
 		port = p;
+		in = null;
+		out = null;
 	}
 	
 	public void start() throws IOException
@@ -20,32 +26,22 @@ public class Server
 		String cmd = "";
 		while (client.isBound())
 		{
-			cmd = client.getInputStream().toString();
-			byte result = parseCommand(cmd);
+			cmd = in.readLine();
+			int result = parseCommand(cmd);
 			System.out.printf("Sending %d back to client", result);
-			client.getOutputStream().write(result);
+			out.write(result);
 		}
 	}
 	
 	
 	/**
-	 * 
+	 * Takes a command string, processes it, and attempts to execute the command
 	 * @param cmd (String) Command to be executed
 	 * @return (int) Status code from command execution
 	 */
-	private byte parseCommand(String cmd)
+	private int parseCommand(String cmd)
 	{
-		return 0x40;
+		return StatusCodes.NO_OPERATION.statusCode;
 	}
 
 }
-
-/* 
-	List of Status Codes:
-		0 - Invalid command
-		1 - Message
-		2 - Mouse Move
-		3 - Mouse Click
-		4 - Key Press
-		5 - Key Release
-*/

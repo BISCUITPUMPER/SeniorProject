@@ -20,6 +20,7 @@ public class CommandLineClient
 			System.err.println("Something unexpected has occured!");
 			e.printStackTrace();
 		}
+		reader.nextLine();
 		client.sendCommand("MESG~HELLO");
 	}
 }

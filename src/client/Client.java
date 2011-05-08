@@ -63,4 +63,13 @@ public class Client
 	{
 		return host;
 	}
+	
+	/**
+	 * Gets the status of the connection
+	 * @return (boolean) True if connected, false if not
+	 */
+	public boolean isConnected()
+	{
+		return sock.isConnected();
+	}
 }
