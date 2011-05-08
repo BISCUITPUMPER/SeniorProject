@@ -53,11 +53,11 @@ public class Client
 	public boolean sendCommand(String cmd) throws IOException
 	{
 		//Assume that the command fails
-		boolean retVal = false;
+		boolean retVal = true;
 		if (sock.isConnected())
 		{
-			sock.getOutputStream().write(cmd.getBytes());
-			retVal = sock.getInputStream().read() < 0;
+			out.write(cmd);
+			System.out.println(in.readLine());
 		}
 		return retVal;
 	}

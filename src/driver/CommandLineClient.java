@@ -2,7 +2,6 @@ package driver;
 
 import java.io.IOException;
 import java.util.Scanner;
-
 import client.Client;
 
 public class CommandLineClient
@@ -22,6 +21,7 @@ public class CommandLineClient
 		}
 		reader.nextLine();
 		System.out.println("sending message");
+		reader.nextLine();
 		client.sendCommand("MESG~HELLO");
 	}
 }

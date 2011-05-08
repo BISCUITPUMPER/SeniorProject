@@ -41,9 +41,11 @@ public class Server
 		out = new PrintWriter(client.getOutputStream());
 		in = new BufferedReader(new InputStreamReader(client.getInputStream()));
 		String cmd = "";
+		System.out.println("connected...now waiting for a command");
 		while (client.isConnected())
 		{
 			cmd = in.readLine();
+			System.err.println("Calling parseCommand(" + cmd + ")");
 			StatusCode result = parseCommand(cmd);
 			System.out.printf("Sending the response message %s with the status code of %d back to client", result);
 			out.write(result.statusCode);
@@ -70,6 +72,7 @@ public class Server
 			{
 				sb.append("~" + cmdBreak[x]);
 			}
+			System.err.println(sb.toString());
 			//showMessageDialog waits until the user presses the button
 			JOptionPane.showMessageDialog(frame, sb.toString(), "New Message!", JOptionPane.PLAIN_MESSAGE);
 			return StatusCode.MESSAGE_SENT;
