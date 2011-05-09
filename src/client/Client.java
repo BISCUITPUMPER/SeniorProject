@@ -57,8 +57,8 @@ public class Client
 		if (sock.isConnected())
 		{
 			out.write(cmd);
-			System.out.println(in.readLine());
 		}
+		read();
 		return retVal;
 	}
 	/**
@@ -77,5 +77,10 @@ public class Client
 	public boolean isConnected()
 	{
 		return sock.isConnected();
+	}
+	
+	public String read() throws IOException
+	{
+		return in.readLine();
 	}
 }

@@ -42,14 +42,17 @@ public class Server
 		in = new BufferedReader(new InputStreamReader(client.getInputStream()));
 		String cmd = "";
 		System.out.println("connected...now waiting for a command");
-		while (client.isConnected())
+		out.write(StatusCode.SOCK_CONNECT.toString());
+		parseCommand("MESG~HELLO");
+		return;
+		/*while (client.isConnected())
 		{
 			cmd = in.readLine();
 			System.err.println("Calling parseCommand(" + cmd + ")");
 			StatusCode result = parseCommand(cmd);
 			System.out.printf("Sending the response message %s with the status code of %d back to client", result);
 			out.write(result.statusCode);
-		}
+		}*/
 	}
 	
 	
@@ -68,7 +71,7 @@ public class Server
 			//Initially, put the first element of cmdBreak (message)
 			StringBuilder sb = new StringBuilder(cmdBreak[1]);
 			//If there is a tilde in the message, additional cmdBreak elements will be created
-			for (int x = 1; x < cmdBreak.length; x++)
+			for (int x = 2; x < cmdBreak.length; x++)
 			{
 				sb.append("~" + cmdBreak[x]);
 			}

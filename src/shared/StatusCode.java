@@ -1,8 +1,9 @@
 package shared;
 
 public enum StatusCode {
-	NO_OPERATION (0),
-	MESSAGE_SENT (1);
+	SOCK_CONNECT (0),
+	NO_OPERATION (1),
+	MESSAGE_SENT (2);
 	
 	public int statusCode;
 	StatusCode(int statusCode)
