@@ -43,16 +43,14 @@ public class Server
 		String cmd = "";
 		System.out.println("connected...now waiting for a command");
 		out.write(StatusCode.SOCK_CONNECT.toString());
-		parseCommand("MESG~HELLO");
-		return;
-		/*while (client.isConnected())
+		while (client.isConnected())
 		{
 			cmd = in.readLine();
 			System.err.println("Calling parseCommand(" + cmd + ")");
 			StatusCode result = parseCommand(cmd);
 			System.out.printf("Sending the response message %s with the status code of %d back to client", result);
 			out.write(result.statusCode);
-		}*/
+		}
 	}
 	
 	

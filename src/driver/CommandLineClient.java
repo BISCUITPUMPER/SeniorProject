@@ -3,7 +3,6 @@ package driver;
 import java.io.IOException;
 import java.util.Scanner;
 import client.Client;
-import shared.*;
 
 public class CommandLineClient
 {
