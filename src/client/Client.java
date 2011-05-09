@@ -81,6 +81,10 @@ public class Client
 	
 	public String read() throws IOException
 	{
-		return in.readLine();
+		if (sock.isConnected())
+		{
+			return in.readLine();
+		}
+		return null;
 	}
 }
