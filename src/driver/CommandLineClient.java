@@ -19,6 +19,8 @@ public class CommandLineClient
 			System.err.println("Something unexpected has occured!");
 			e.printStackTrace();
 		}
+		//TODO: Get the following command to send over a socket.
+		//It works when the command is given in the server code, not over a socket (possible a timing error?)
 		client.read();
 		System.out.println("sending message");
 		reader.nextLine();
