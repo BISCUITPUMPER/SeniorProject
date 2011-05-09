@@ -1,5 +1,6 @@
 package server;
 
+import java.awt.AWTException;
 import java.awt.Component;
 import java.io.BufferedReader;
 import java.io.IOException;
@@ -7,6 +8,7 @@ import java.io.InputStreamReader;
 import java.io.PrintWriter;
 import java.net.ServerSocket;
 import java.net.Socket;
+import java.awt.Robot;
 
 import javax.swing.JOptionPane;
 
@@ -19,7 +21,7 @@ public class Server
 	private PrintWriter out;
 	private Component frame;
 	private Robot r;
-	public Server(int p) throws AWT Exception
+	public Server(int p) throws AWTException
 	{
 		port = p;
 		in = null;
