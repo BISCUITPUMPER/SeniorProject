@@ -18,20 +18,23 @@ public class Server
 	private BufferedReader in;
 	private PrintWriter out;
 	private Component frame;
-	public Server(int p)
+	private Robot r;
+	public Server(int p) throws AWT Exception
 	{
 		port = p;
 		in = null;
 		out = null;
 		frame = null;
+		r = new Robot();
 	}
 	
-	public Server(int p, Component fr)
+	public Server(int p, Component fr) throws AWTException
 	{
 		port = p;
 		in = null;
 		out = null;
 		frame = fr;
+		r = new Robot();
 	}
 	
 	public void start() throws IOException
@@ -77,6 +80,13 @@ public class Server
 			//showMessageDialog waits until the user presses the button
 			JOptionPane.showMessageDialog(frame, sb.toString(), "New Message!", JOptionPane.PLAIN_MESSAGE);
 			return StatusCode.MESSAGE_SENT;
+		}
+		else if (cmdBreak[0].equalsIgnoreCase("MOVE"))
+		{
+			int x = Integer.parseInt(cmdBreak[1]);
+			int y = Integer.parseInt(cmdBreak[2]);
+			r.mouseMove(x,y);
+			return StatusCode.MOUSE_MOVE;
 		}
 		return StatusCode.NO_OPERATION;
 	}
