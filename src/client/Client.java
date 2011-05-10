@@ -56,7 +56,7 @@ public class Client
 		boolean retVal = true;
 		if (sock.isConnected())
 		{
-			out.writeln(cmd);
+			out.println(cmd);
 		}
 		read();
 		return retVal;
