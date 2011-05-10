@@ -53,7 +53,7 @@ public class Server
 			cmd = in.readLine();
 			System.err.println("Calling parseCommand(" + cmd + ")");
 			StatusCode result = parseCommand(cmd);
-			System.out.printf("Sending the response message %s with the status code of %d back to client", result);
+			System.out.printf("Sending the response message %s with the status code of %d back to client", result, result.statusCode);
 			out.write(result.statusCode);
 		}
 	}
