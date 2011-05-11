@@ -47,13 +47,10 @@ public class Client
 	/**
 	 * 
 	 * @param cmd (String) Command to send to server
-	 * @return (boolean) Whether or not the command was sent successfully.  Possible errors include if client isn't connected or if the server responds with an error message
 	 * @throws IOException
 	 */
-	public boolean sendCommand(String cmd) throws IOException
+	public void sendCommand(String cmd) throws IOException
 	{
-		//Assume that the command fails
-		boolean retVal = true;
 		if (sock.isConnected())
 		{
 			out.write(cmd);

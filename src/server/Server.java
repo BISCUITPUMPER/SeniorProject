@@ -90,7 +90,7 @@ public class Server
 			r.mouseMove(x,y);
 			return StatusCode.MOUSE_MOVE;
 		}
-		else if (cmdBreak[0].equalsIgnoreCase("SCROLL")
+		else if (cmdBreak[0].equalsIgnoreCase("SCROLL"))
 		{
 			int clicks = Integer.parseInt(cmdBreak[1]);
 			r.mouseWheel(clicks);
