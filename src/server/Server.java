@@ -96,6 +96,8 @@ public class Server
 			r.mouseWheel(clicks);
 			return StatusCode.MOUSE_SCROLL;
 		}
+		//TODO: Add the press and release events for key
+		//NOTE: CharCodes file:///F:/api/constant-values.html#java.awt.event.KeyEvent.VK_CLEAR
 		return StatusCode.NO_OPERATION;
 	}
 
