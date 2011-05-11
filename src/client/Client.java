@@ -59,7 +59,16 @@ public class Client
 			out.write(cmd);
 			out.flush();
 		}
-		return retVal;
+		System.out.println("Sent command.  Waiting for response");
+		String returnStatus = read();
+		if (returnStatus == null)
+		{
+			System.err.println("There was a problem reading the response.  Closing connection.");
+		}
+		else
+		{
+			//TODO: Client side response
+		}
 	}
 	/**
 	 * Returns the hostname/IP address of the remote host
