@@ -101,4 +101,13 @@ public class Server
 		return StatusCode.NO_OPERATION;
 	}
 
+	/**
+		Takes a string that represents a key and presses or releases it
+		@param key (String) A string representing the key to be used and how it will be manipulated
+	*/
+	private void key_manager(String key)
+	{
+		
+	}
+
 }
