@@ -101,4 +101,19 @@ public class Server
 		return StatusCode.NO_OPERATION;
 	}
 
+	/**
+		Takes a string that represents a key and presses or releases it
+		@param key (String) A string representing the key to be used and how it will be manipulated.  Takes the form of key_manip
+	*/
+	private void key_manager(String key)
+	{
+		String[] split = key.split("_");
+		int key = 0;
+		//If the length of the first element is 0, then underscore is being used
+		if (split[0].length() == 0)
+		{
+			key = VK_UNDERSCORE;
+		}
+	}
+
 }
