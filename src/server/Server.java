@@ -110,9 +110,34 @@ public class Server
 		String[] split = key.split("_");
 		int key = 0;
 		//If the length of the first element is 0, then underscore is being used
-		if (split[0].length() == 0)
+		if (split[0].length() == 0)r
 		{
 			key = VK_UNDERSCORE;
+		}
+		//This will be the case that handles single character keys (punctuation, numbers, characters)
+		else if (split[0].length() == 1)
+		{
+			//The character to be used is a letter
+			//There are two cases - Upper and Lower
+			if (Character.isLetter(split[0].charAt(0)))
+			{
+				if (Character.isLowerCase(split[0].charAt(0)))
+				{
+					//The key codes for letters reflect the uppercase positions
+					//If it is lower, subtract 32
+					key = split[0].charAt(0) - 32;
+				}
+				//Character is a letter that is upper case
+				else
+				{
+					key = split[0].charAt(0);
+				}
+			}
+			else if (Character.isDigit(split[0].charAt(0)))
+			{
+				//Number constants are the same as their int val
+				key = split[0].charAt(0);
+			}
 		}
 	}
 
