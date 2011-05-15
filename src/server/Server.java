@@ -140,6 +140,16 @@ public class Server
 				k = split[0].charAt(0);
 			}
 		}
+		
+		//The reason that the last element is not hardcoded is because the length of an underscore split is 3
+		if (split[split.length - 1].equalsIgnoreCase("up"))
+		{
+			r.keyRelease(k);
+		}
+		else
+		{
+			r.keyPress(k);
+		}
 	}
 
 }
