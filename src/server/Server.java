@@ -9,6 +9,7 @@ import java.io.PrintWriter;
 import java.net.ServerSocket;
 import java.net.Socket;
 import java.awt.Robot;
+import java.awt.event.KeyEvent;
 
 import javax.swing.JOptionPane;
 
@@ -108,11 +109,11 @@ public class Server
 	private void key_manager(String key)
 	{
 		String[] split = key.split("_");
-		int key = 0;
+		int k = 0;
 		//If the length of the first element is 0, then underscore is being used
-		if (split[0].length() == 0)r
+		if (split[0].length() == 0)
 		{
-			key = VK_UNDERSCORE;
+			k = KeyEvent.VK_UNDERSCORE;
 		}
 		//This will be the case that handles single character keys (punctuation, numbers, characters)
 		else if (split[0].length() == 1)
@@ -125,18 +126,18 @@ public class Server
 				{
 					//The key codes for letters reflect the uppercase positions
 					//If it is lower, subtract 32
-					key = split[0].charAt(0) - 32;
+					k = split[0].charAt(0) - 32;
 				}
 				//Character is a letter that is upper case
 				else
 				{
-					key = split[0].charAt(0);
+					k = split[0].charAt(0);
 				}
 			}
 			else if (Character.isDigit(split[0].charAt(0)))
 			{
 				//Number constants are the same as their int val
-				key = split[0].charAt(0);
+				k = split[0].charAt(0);
 			}
 		}
 	}
