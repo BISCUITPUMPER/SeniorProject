@@ -99,14 +99,32 @@ public class Server
 		}
 		//TODO: Add the press and release events for key
 		//NOTE: CharCodes file:///F:/api/constant-values.html#java.awt.event.KeyEvent.VK_CLEAR
+		else if (cmdBreak[0].equalsIgnoreCase("KEY"))
+		{
+			String key = "";
+			//If the key to be pressed is a tilde, the length will be > 2
+			if (cmdBreak.length>2)
+			{
+				for (int x = 1; x < cmdBreak.length; x++)
+				{
+					key += cmdBreak[x];
+				}
+			}
+			else
+			{
+				key = cmdBreak[1];
+			}
+			return key_manager(key);
+		}
 		return StatusCode.NO_OPERATION;
 	}
 
 	/**
 		Takes a string that represents a key and presses or releases it
-		@param key (String) A string representing the key to be used and how it will be manipulated.  Takes the form of key_manip
+		@param key (String) A string representing the key to be used and how it will be manipulated.  Either up or down
+		@return (StatusCode) StatusCode representing the methods actions
 	*/
-	private void key_manager(String key)
+	private StatusCode key_manager(String key)
 	{
 		String[] split = key.split("_");
 		int k = 0;
@@ -145,11 +163,14 @@ public class Server
 		if (split[split.length - 1].equalsIgnoreCase("up"))
 		{
 			r.keyRelease(k);
+			return StatusCode.KEY_RELEASE;
 		}
 		else
 		{
 			r.keyPress(k);
+			return StatusCode.KEY_PRESS;
 		}
+		return StatusCode.NO_OPERATION;
 	}
 
 }
