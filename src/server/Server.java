@@ -170,5 +170,46 @@ public class Server
 		}
 		return StatusCode.NO_OPERATION;
 	}
+	
+	/**
+		Takes a string that represents a mouse button and presses or releases it
+		@param mouse (String) A string representing the mouse to be used and how it will be manipulated.  Either up or down
+		@return (StatusCode) StatusCode representing the methods actions
+	*/
+	private StatusCode mouse_click(String mouse)
+	{
+		String[] split = mouse.split("_");
+		int button = 0;
+		//Default is to return no operation
+		if (split[0].equalsIgnoreCase("L"))
+		{
+			button = InputEvent.BUTTON1_MASK;
+		}
+		else if (split[0].equalsIgnoreCase("R"))
+		{
+			button = InputEvent.BUTTON3_MASK;
+		}
+		else if (split[0].equalsIgnoreCase("M"))
+		{
+			button = InputEvent.BUTTON2_MASK;
+		}
+		else
+		{
+			return StatusCode.NO_OPERATION;
+		}
+		
+		//If its an invalid op, return no op
+		//Last not hardcoded to ensure that there is no invalid data (extra _)
+		if (split[split.length - 1].equalsIgnoreCase("up"))
+		{
+			r.mouseRelease(button);
+			return StatusCode.MOUSE_RELEASE;
+		}
+		else
+		{
+			r.mousePress(button);
+			return StatusCode.MOUSE_PRESS;
+		}
+	}
 
 }
