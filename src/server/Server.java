@@ -9,6 +9,7 @@ import java.io.PrintWriter;
 import java.net.ServerSocket;
 import java.net.Socket;
 import java.awt.Robot;
+import java.awt.event.InputEvent;
 import java.awt.event.KeyEvent;
 
 import javax.swing.JOptionPane;
@@ -114,6 +115,23 @@ public class Server
 			}
 			return key_manager(key);
 		}
+		else if (cmdBreak[0].equalsIgnoreCase("MOUSE"))
+		{
+			String key = "";
+			//If the key to be pressed is a tilde, the length will be > 2
+			if (cmdBreak.length>2)
+			{
+				for (int x = 1; x < cmdBreak.length; x++)
+				{
+					key += cmdBreak[x];
+				}
+			}
+			else
+			{
+				key = cmdBreak[1];
+			}
+			return mouse_click(key);
+		}
 		return StatusCode.NO_OPERATION;
 	}
 
@@ -168,7 +186,6 @@ public class Server
 			r.keyPress(k);
 			return StatusCode.KEY_PRESS;
 		}
-		return StatusCode.NO_OPERATION;
 	}
 	
 	/**
