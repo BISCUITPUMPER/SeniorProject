@@ -26,3 +26,5 @@ public class CommandLineClient
 		client.sendCommand("MESG~HELLO");
 	}
 }
+
+//test
