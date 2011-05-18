@@ -9,7 +9,8 @@ public enum StatusCode {
 	KEY_PRESS (5),
 	KEY_RELEASE (6),
 	MOUSE_PRESS (7),
-	MOUSE_RELEASE (8);
+	MOUSE_RELEASE (8),
+	SOCK_DISCONNECT (9);
 	
 	public int statusCode;
 	StatusCode(int statusCode)

@@ -55,8 +55,14 @@ public class Server
 			cmd = in.readLine();
 			System.err.println("Calling parseCommand(" + cmd + ")");
 			StatusCode result = parseCommand(cmd);
-			System.out.printf("Sending the response message %s with the status code of %d back to client", result, result.statusCode);
+			System.out.printf("Sending the response message %s with the status code of %d back to client\n", result, result.statusCode);
 			out.write(result.statusCode);
+			if (result.statusCode == 9)
+			{
+				sock.close();
+				System.out.println("Closing connection to client");
+				return;
+			}
 		}
 	}
 	
@@ -131,6 +137,10 @@ public class Server
 				key = cmdBreak[1];
 			}
 			return mouse_click(key);
+		}
+		else if (cmdBreak[0].equalsIgnoreCase("DISCONNECT"))
+		{
+			return StatusCode.SOCK_DISCONNECT;
 		}
 		return StatusCode.NO_OPERATION;
 	}
