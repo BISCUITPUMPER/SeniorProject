@@ -65,6 +65,7 @@ public class Client
 		else
 		{
 			//TODO: Client side response
+			System.out.printf("Read the response message %s", returnStatus);
 		}
 	}
 	/**
