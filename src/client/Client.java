@@ -67,7 +67,8 @@ public class Client
 		else
 		{
 			//TODO: Client side response
-			System.out.printf("Read the response message %s", returnStatus);
+			StatusCode s = StatusCode.valueOf(returnStatus);
+			System.out.printf("Read the response message %s, with a value of %d\n", returnStatus, s.statusCode);
 		}
 	}
 	/**
