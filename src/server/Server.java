@@ -56,7 +56,8 @@ public class Server
 			System.err.println("Calling parseCommand(" + cmd + ")");
 			StatusCode result = parseCommand(cmd);
 			System.out.printf("Sending the response message %s with the status code of %d back to client\n", result, result.statusCode);
-			out.write(result.statusCode);
+			out.println(result + "~" + result.statusCode);
+			out.flush();
 			if (result.statusCode == 9)
 			{
 				sock.close();

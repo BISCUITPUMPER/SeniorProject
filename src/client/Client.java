@@ -10,6 +10,7 @@ import java.io.IOException;
 import java.io.InputStreamReader;
 import java.io.PrintWriter;
 import java.net.UnknownHostException;
+import shared.StatusCode;
 
 public class Client 
 {
@@ -53,11 +54,12 @@ public class Client
 	{
 		if (sock.isConnected())
 		{
-			out.write(cmd);
+			out.println(cmd);
 			out.flush();
 		}
 		System.out.println("Sent command.  Waiting for response");
 		String returnStatus = read();
+		System.out.println(returnStatus);
 		if (returnStatus == null)
 		{
 			System.err.println("There was a problem reading the response.  Closing connection.");
@@ -88,10 +90,9 @@ public class Client
 	
 	public String read() throws IOException
 	{
-		if (sock.isConnected())
-		{
-			return in.readLine();
-		}
-		return null;
+		System.out.println("reading");
+		String s = in.readLine();
+		System.out.println("read:" + s);
+		return s;
 	}
 }
