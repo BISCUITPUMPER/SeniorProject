@@ -13,7 +13,6 @@ import java.awt.event.InputEvent;
 import java.awt.event.KeyEvent;
 
 import javax.swing.JOptionPane;
-
 import shared.StatusCode;
 
 public class Server 
