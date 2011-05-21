@@ -34,6 +34,9 @@ public class Client
 		sock = new Socket(host, port);
 		out = new PrintWriter(sock.getOutputStream());
 		in = new BufferedReader(new InputStreamReader(sock.getInputStream()));
+		
+		//Specify a timeout of one minute
+		sock.setSoTimeout(3600 * 1000);
 	}
 	
 	/**
@@ -46,12 +49,14 @@ public class Client
 	}
 	
 	/**
-	 * 
+	 *
 	 * @param cmd (String) Command to send to server
+	 * @return (StatusCode) representing the response from server.  Defaults to StatusCode.NO_OPERATION
 	 * @throws IOException
 	 */
-	public void sendCommand(String cmd) throws IOException
+	public StatusCode sendCommand(String cmd) throws IOException
 	{
+		StatusCode s = StatusCode.NO_OPERATION;
 		if (sock.isConnected())
 		{
 			out.println(cmd);
@@ -66,10 +71,10 @@ public class Client
 		}
 		else
 		{
-			//TODO: Client side response
-			StatusCode s = StatusCode.valueOf(returnStatus);
-			System.out.printf("Read the response message %s, with a value of %d\n", returnStatus, s.statusCode);
+			s = StatusCode.valueOf(returnStatus);
+			//The client chooses how to handle the response 
 		}
+		return s;
 	}
 	/**
 	 * Returns the hostname/IP address of the remote host
@@ -91,9 +96,7 @@ public class Client
 	
 	public String read() throws IOException
 	{
-		System.out.println("reading");
 		String s = in.readLine();
-		System.out.println("read:" + s);
 		return s;
 	}
 }
