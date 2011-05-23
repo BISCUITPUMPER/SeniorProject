@@ -72,7 +72,10 @@ public class Client
 		else
 		{
 			s = StatusCode.valueOf(returnStatus);
-			//The client chooses how to handle the response 
+			if (s.statusCode == StatusCode.SOCK_DISCONNECT.statusCode)
+			{
+				sock.close();
+			}
 		}
 		return s;
 	}
