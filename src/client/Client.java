@@ -37,6 +37,14 @@ public class Client
 		
 		//Specify a timeout of one minute
 		sock.setSoTimeout(3600 * 1000);
+		
+		//Check for connection (through SOCK_CONNECT)
+		String s = read();
+		StatusCode r = StatusCode.valueOf(s);
+		if (r.statusCode == StatusCode.SOCK_CONNECT.statusCode)
+		{
+			System.out.println("Connected to server!");
+		}
 	}
 	
 	/**

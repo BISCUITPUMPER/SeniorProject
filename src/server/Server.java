@@ -48,16 +48,17 @@ public class Server
 		in = new BufferedReader(new InputStreamReader(client.getInputStream()));
 		String cmd = "";
 		System.out.println("connected...now waiting for a command");
-		out.write(StatusCode.SOCK_CONNECT.toString());
+		out.println(StatusCode.SOCK_CONNECT.toString());
+		out.flush();
 		while (client.isConnected())
 		{
 			cmd = in.readLine();
 			System.err.println("Calling parseCommand(" + cmd + ")");
 			StatusCode result = parseCommand(cmd);
 			System.out.printf("Sending the response message %s with the status code of %d back to client\n", result, result.statusCode);
-			out.println(result + "~" + result.statusCode);
+			out.println(result);
 			out.flush();
-			if (result.statusCode == 9)
+			if (result.statusCode == StatusCode.SOCK_DISCONNECT.statusCode)
 			{
 				sock.close();
 				System.out.println("Closing connection to client");
