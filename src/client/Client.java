@@ -83,6 +83,7 @@ public class Client
 			if (s.statusCode == StatusCode.SOCK_DISCONNECT.statusCode)
 			{
 				sock.close();
+				System.out.println(sock.isClosed()+ "lolfest" + sock.isConnected());
 			}
 		}
 		return s;

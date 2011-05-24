@@ -72,8 +72,9 @@ public class Server
 	 * Takes a command string, processes it, and attempts to execute the command
 	 * @param cmd (String) Command to be executed
 	 * @return (StatusCode) Status code from command execution
+	 * @throws IOException 
 	 */
-	private StatusCode parseCommand(String cmd)
+	private StatusCode parseCommand(String cmd) throws IOException
 	{
 		//The tilde (~) is used as a character that seperates portions of the command string (ie coordinates for mouse move or message body)
 		String[] cmdBreak = cmd.split("~");
@@ -138,6 +139,20 @@ public class Server
 				key = cmdBreak[1];
 			}
 			return mouse_click(key);
+		}
+		else if (cmdBreak[0].equalsIgnoreCase("RUN"))
+		{
+			Runtime r = Runtime.getRuntime();
+			try
+			{
+				r.exec(cmdBreak[1]);	
+			}
+			catch (Exception e)
+			{				
+				return StatusCode.NO_OPERATION;
+			}
+			return StatusCode.PROG_EXECUTE;
+			
 		}
 		else if (cmdBreak[0].equalsIgnoreCase("DISCONNECT"))
 		{
