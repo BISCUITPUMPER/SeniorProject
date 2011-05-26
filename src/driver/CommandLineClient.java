@@ -6,7 +6,7 @@ import client.Client;
 
 public class CommandLineClient
 {
-	public static void main(String[] args) throws IOException
+	public static void main(String[] args) throws IOException, ClassNotFoundException
 	{
 		Scanner reader = new Scanner(System.in);
 		Client client = null;

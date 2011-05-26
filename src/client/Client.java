@@ -5,11 +5,17 @@ package client;
 
 //Socket Class
 import java.net.Socket;
+import java.awt.image.BufferedImage;
 import java.io.BufferedReader;
+import java.io.File;
 import java.io.IOException;
 import java.io.InputStreamReader;
+import java.io.ObjectInputStream;
 import java.io.PrintWriter;
 import java.net.UnknownHostException;
+import java.util.Scanner;
+import javax.imageio.ImageIO;
+
 import shared.StatusCode;
 
 public class Client 
@@ -61,12 +67,30 @@ public class Client
 	 * @param cmd (String) Command to send to server
 	 * @return (StatusCode) representing the response from server.  Defaults to StatusCode.NO_OPERATION
 	 * @throws IOException
+	 * @throws ClassNotFoundException 
 	 */
-	public StatusCode sendCommand(String cmd) throws IOException
+	public StatusCode sendCommand(String cmd) throws IOException, ClassNotFoundException
 	{
 		StatusCode s = StatusCode.NO_OPERATION;
 		if (sock.isConnected())
 		{
+			//Client wants a screenshot
+			if (cmd.substring(0, 3).equalsIgnoreCase("REQ"))
+			{
+				Scanner reader = new Scanner(System.in);
+				System.out.println("What is the name of the file to save the screenshot to (w/o extension)?");
+				String fileName = reader.nextLine();
+				fileName += ".png";
+				
+				//Now prepare the object stream
+				ObjectInputStream ois = new ObjectInputStream(sock.getInputStream());
+				Object obj = ois.readObject();
+				if (obj instanceof BufferedImage)
+				{
+					BufferedImage ico = (BufferedImage) obj;
+					ImageIO.write(ico, "png", new File(fileName));	
+				}
+			}
 			out.println(cmd);
 			out.flush();
 		}
@@ -83,7 +107,6 @@ public class Client
 			if (s.statusCode == StatusCode.SOCK_DISCONNECT.statusCode)
 			{
 				sock.close();
-				System.out.println(sock.isClosed()+ "lolfest" + sock.isConnected());
 			}
 		}
 		return s;
