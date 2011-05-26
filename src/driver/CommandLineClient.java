@@ -26,7 +26,12 @@ public class CommandLineClient
 		{
 			System.out.println("Command: ");
 			cmd = reader.nextLine();
+System.out.println(cmd);
+cmd = reader.nextLine();
+			//client.sendCommand("REQEST");
 			client.sendCommand(cmd);
+			client.sendCommand("REQEST");
+			break;
 		}
 	}
 }

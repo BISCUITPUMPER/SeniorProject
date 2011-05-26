@@ -72,18 +72,27 @@ public class Client
 	public StatusCode sendCommand(String cmd) throws IOException, ClassNotFoundException
 	{
 		StatusCode s = StatusCode.NO_OPERATION;
-		if (sock.isConnected())
+		ObjectInputStream ois = null;
+		if (sock.isConnected() && cmd.length() > 0)
 		{
 			//Client wants a screenshot
 			if (cmd.substring(0, 3).equalsIgnoreCase("REQ"))
+			{
+				//Now prepare the object stream
+				ois = new ObjectInputStream(sock.getInputStream());
+				
+				//Send the regular command
+			}
+			out.println(cmd);
+			out.flush();
+			
+			if (ois != null)
 			{
 				Scanner reader = new Scanner(System.in);
 				System.out.println("What is the name of the file to save the screenshot to (w/o extension)?");
 				String fileName = reader.nextLine();
 				fileName += ".png";
 				
-				//Now prepare the object stream
-				ObjectInputStream ois = new ObjectInputStream(sock.getInputStream());
 				Object obj = ois.readObject();
 				if (obj instanceof BufferedImage)
 				{
@@ -91,8 +100,6 @@ public class Client
 					ImageIO.write(ico, "png", new File(fileName));	
 				}
 			}
-			out.println(cmd);
-			out.flush();
 		}
 		System.out.println("Sent command.  Waiting for response");
 		String returnStatus = read();
