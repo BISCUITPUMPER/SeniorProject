@@ -184,8 +184,10 @@ public class Server
 			catch (Exception e)
 			{
 				e.printStackTrace();
+				oos.close();
 				return StatusCode.NO_OPERATION;
 			}
+			oos.close();
 			return StatusCode.SCREEN_SENT;
 			
 		}
