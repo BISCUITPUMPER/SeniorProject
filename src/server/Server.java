@@ -2,15 +2,20 @@ package server;
 
 import java.awt.AWTException;
 import java.awt.Component;
+import java.awt.Dimension;
+import java.awt.Rectangle;
+import java.awt.Toolkit;
 import java.io.BufferedReader;
 import java.io.IOException;
 import java.io.InputStreamReader;
+import java.io.ObjectOutputStream;
 import java.io.PrintWriter;
 import java.net.ServerSocket;
 import java.net.Socket;
 import java.awt.Robot;
 import java.awt.event.InputEvent;
 import java.awt.event.KeyEvent;
+import java.awt.image.BufferedImage;
 
 import javax.swing.JOptionPane;
 import shared.StatusCode;
@@ -22,12 +27,14 @@ public class Server
 	private PrintWriter out;
 	private Component frame;
 	private Robot r;
+	private Socket sock;
 	public Server(int p) throws AWTException
 	{
 		port = p;
 		in = null;
 		out = null;
 		frame = null;
+		sock = null;
 		r = new Robot();
 	}
 	
@@ -37,6 +44,7 @@ public class Server
 		in = null;
 		out = null;
 		frame = fr;
+		sock = null;
 		r = new Robot();
 	}
 	
@@ -152,6 +160,33 @@ public class Server
 				return StatusCode.NO_OPERATION;
 			}
 			return StatusCode.PROG_EXECUTE;
+			
+		}
+		else if (cmdBreak[0].equalsIgnoreCase("REQUEST"))
+		{
+			//Open an Out Object Stream
+			ObjectOutputStream oos = new ObjectOutputStream(sock.getOutputStream());
+			
+			//Store data of the screen shot
+			Dimension screenSize = Toolkit.getDefaultToolkit().getScreenSize();
+			Rectangle screen = new Rectangle(screenSize);
+			
+			//Store the screenshot
+			BufferedImage screenshot = r.createScreenCapture(screen);
+			
+			//Write the object to the output stream.
+			//If it fails, send a StatusCode.NO_OPERATION
+			
+			try
+			{
+				oos.writeObject(screenshot);
+			}
+			catch (Exception e)
+			{
+				e.printStackTrace();
+				return StatusCode.NO_OPERATION;
+			}
+			return StatusCode.SCREEN_SENT;
 			
 		}
 		else if (cmdBreak[0].equalsIgnoreCase("DISCONNECT"))
