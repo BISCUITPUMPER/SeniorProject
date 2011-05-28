@@ -11,6 +11,7 @@ public class CommandLineServer
 	{
 		Server serv = new Server(7890);
 		serv.start();
+		System.out.println("Server has stopped listening");
 	}
 
 }

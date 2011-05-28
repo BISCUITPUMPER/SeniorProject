@@ -2,18 +2,22 @@ package server;
 
 import java.awt.AWTException;
 import java.awt.Component;
+import java.awt.Dimension;
+import java.awt.Rectangle;
+import java.awt.Toolkit;
 import java.io.BufferedReader;
 import java.io.IOException;
 import java.io.InputStreamReader;
+import java.io.ObjectOutputStream;
 import java.io.PrintWriter;
 import java.net.ServerSocket;
 import java.net.Socket;
 import java.awt.Robot;
 import java.awt.event.InputEvent;
 import java.awt.event.KeyEvent;
+import java.awt.image.BufferedImage;
 
 import javax.swing.JOptionPane;
-
 import shared.StatusCode;
 
 public class Server 
@@ -23,12 +27,14 @@ public class Server
 	private PrintWriter out;
 	private Component frame;
 	private Robot r;
+	private Socket sock;
 	public Server(int p) throws AWTException
 	{
 		port = p;
 		in = null;
 		out = null;
 		frame = null;
+		sock = null;
 		r = new Robot();
 	}
 	
@@ -38,6 +44,7 @@ public class Server
 		in = null;
 		out = null;
 		frame = fr;
+		sock = null;
 		r = new Robot();
 	}
 	
@@ -49,14 +56,22 @@ public class Server
 		in = new BufferedReader(new InputStreamReader(client.getInputStream()));
 		String cmd = "";
 		System.out.println("connected...now waiting for a command");
-		out.write(StatusCode.SOCK_CONNECT.toString());
+		out.println(StatusCode.SOCK_CONNECT.toString());
+		out.flush();
 		while (client.isConnected())
 		{
 			cmd = in.readLine();
 			System.err.println("Calling parseCommand(" + cmd + ")");
 			StatusCode result = parseCommand(cmd);
-			System.out.printf("Sending the response message %s with the status code of %d back to client", result, result.statusCode);
-			out.write(result.statusCode);
+			System.out.printf("Sending the response message %s with the status code of %d back to client\n", result, result.statusCode);
+			out.println(result);
+			out.flush();
+			if (result.statusCode == StatusCode.SOCK_DISCONNECT.statusCode)
+			{
+				sock.close();
+				System.out.println("Closing connection to client");
+				return;
+			}
 		}
 	}
 	
@@ -65,8 +80,9 @@ public class Server
 	 * Takes a command string, processes it, and attempts to execute the command
 	 * @param cmd (String) Command to be executed
 	 * @return (StatusCode) Status code from command execution
+	 * @throws IOException 
 	 */
-	private StatusCode parseCommand(String cmd)
+	private StatusCode parseCommand(String cmd) throws IOException
 	{
 		//The tilde (~) is used as a character that seperates portions of the command string (ie coordinates for mouse move or message body)
 		String[] cmdBreak = cmd.split("~");
@@ -131,6 +147,53 @@ public class Server
 				key = cmdBreak[1];
 			}
 			return mouse_click(key);
+		}
+		else if (cmdBreak[0].equalsIgnoreCase("RUN"))
+		{
+			Runtime r = Runtime.getRuntime();
+			try
+			{
+				r.exec(cmdBreak[1]);	
+			}
+			catch (Exception e)
+			{				
+				return StatusCode.NO_OPERATION;
+			}
+			return StatusCode.PROG_EXECUTE;
+			
+		}
+		else if (cmdBreak[0].equalsIgnoreCase("REQUEST"))
+		{
+			//Open an Out Object Stream
+			ObjectOutputStream oos = new ObjectOutputStream(sock.getOutputStream());
+			
+			//Store data of the screen shot
+			Dimension screenSize = Toolkit.getDefaultToolkit().getScreenSize();
+			Rectangle screen = new Rectangle(screenSize);
+			
+			//Store the screenshot
+			BufferedImage screenshot = r.createScreenCapture(screen);
+			
+			//Write the object to the output stream.
+			//If it fails, send a StatusCode.NO_OPERATION
+			
+			try
+			{
+				oos.writeObject(screenshot);
+			}
+			catch (Exception e)
+			{
+				e.printStackTrace();
+				oos.close();
+				return StatusCode.NO_OPERATION;
+			}
+			oos.close();
+			return StatusCode.SCREEN_SENT;
+			
+		}
+		else if (cmdBreak[0].equalsIgnoreCase("DISCONNECT"))
+		{
+			return StatusCode.SOCK_DISCONNECT;
 		}
 		return StatusCode.NO_OPERATION;
 	}

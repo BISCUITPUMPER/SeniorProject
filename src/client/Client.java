@@ -5,11 +5,18 @@ package client;
 
 //Socket Class
 import java.net.Socket;
+import java.awt.image.BufferedImage;
 import java.io.BufferedReader;
+import java.io.File;
 import java.io.IOException;
 import java.io.InputStreamReader;
+import java.io.ObjectInputStream;
 import java.io.PrintWriter;
 import java.net.UnknownHostException;
+import java.util.Scanner;
+import javax.imageio.ImageIO;
+
+import shared.StatusCode;
 
 public class Client 
 {
@@ -33,6 +40,17 @@ public class Client
 		sock = new Socket(host, port);
 		out = new PrintWriter(sock.getOutputStream());
 		in = new BufferedReader(new InputStreamReader(sock.getInputStream()));
+		
+		//Specify a timeout of one minute
+		sock.setSoTimeout(3600 * 1000);
+		
+		//Check for connection (through SOCK_CONNECT)
+		String s = read();
+		StatusCode r = StatusCode.valueOf(s);
+		if (r.statusCode == StatusCode.SOCK_CONNECT.statusCode)
+		{
+			System.out.println("Connected to server!");
+		}
 	}
 	
 	/**
@@ -45,27 +63,60 @@ public class Client
 	}
 	
 	/**
-	 * 
+	 *
 	 * @param cmd (String) Command to send to server
+	 * @return (StatusCode) representing the response from server.  Defaults to StatusCode.NO_OPERATION
 	 * @throws IOException
+	 * @throws ClassNotFoundException 
 	 */
-	public void sendCommand(String cmd) throws IOException
+	public StatusCode sendCommand(String cmd) throws IOException, ClassNotFoundException
 	{
-		if (sock.isConnected())
+		StatusCode s = StatusCode.NO_OPERATION;
+		ObjectInputStream ois = null;
+		if (sock.isConnected() && cmd.length() > 0)
 		{
-			out.write(cmd);
+			//Client wants a screenshot
+			if (cmd.substring(0, 3).equalsIgnoreCase("REQ"))
+			{
+				//Now prepare the object stream
+				ois = new ObjectInputStream(sock.getInputStream());
+				
+				//Send the regular command
+			}
+			out.println(cmd);
 			out.flush();
+			
+			if (ois != null)
+			{
+				Scanner reader = new Scanner(System.in);
+				System.out.println("What is the name of the file to save the screenshot to (w/o extension)?");
+				String fileName = reader.nextLine();
+				fileName += ".png";
+				
+				Object obj = ois.readObject();
+				if (obj instanceof BufferedImage)
+				{
+					BufferedImage ico = (BufferedImage) obj;
+					ImageIO.write(ico, "png", new File(fileName));	
+				}
+			}
 		}
 		System.out.println("Sent command.  Waiting for response");
 		String returnStatus = read();
+		System.out.println(returnStatus);
 		if (returnStatus == null)
 		{
 			System.err.println("There was a problem reading the response.  Closing connection.");
 		}
 		else
 		{
-			//TODO: Client side response
+			s = StatusCode.valueOf(returnStatus);
+			if (s.statusCode == StatusCode.SOCK_DISCONNECT.statusCode)
+			{
+				sock.close();
+			}
 		}
+		return s;
 	}
 	/**
 	 * Returns the hostname/IP address of the remote host
@@ -87,10 +138,7 @@ public class Client
 	
 	public String read() throws IOException
 	{
-		if (sock.isConnected())
-		{
-			return in.readLine();
-		}
-		return null;
+		String s = in.readLine();
+		return s;
 	}
 }
