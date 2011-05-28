@@ -6,6 +6,8 @@ import javax.swing.*;
  
 public class GUIDriver extends JFrame implements ActionListener
 {
+	// CONSTRUCTOR
+	
 	JLabel lbl = new JLabel("Program");
 	JButton btn = new JButton("START");
 	JCheckBox chk = new JCheckBox("Check");
@@ -15,8 +17,26 @@ public class GUIDriver extends JFrame implements ActionListener
 	JRadioButton rb1 = new JRadioButton("ON", true);
 	JRadioButton rb2 = new JRadioButton("OFF", false);
 	
+	// Menu Materials
+	JMenuBar menuBar = new JMenuBar();
+	JMenu menu = new JMenu("Actions");
+	JMenuItem miMESG = new JMenuItem("Message");
+	JMenuItem miMOVE = new JMenuItem("Move");
+	JMenuItem miSCROLL = new JMenuItem("Scroll");
+	JMenuItem miKEY = new JMenuItem("Key press");
+	JMenuItem miMOUSE = new JMenuItem("Mouse");
+
+
 	public GUIDriver()
 	{
+		// Label
+		Font font = new Font("Dialog", Font.BOLD, 30);
+		lbl.setFont(font);
+		
+		// Menu creation
+		menuBar.add(menu);
+		
+		// Adding items to the frame
 		itemsPanel.setLayout(new FlowLayout());
 		itemsPanel.add(chk);
 		itemsPanel.add(btn);
@@ -29,19 +49,24 @@ public class GUIDriver extends JFrame implements ActionListener
 		allPanel.add(lbl, BorderLayout.NORTH);
 
 		getContentPane().add(allPanel, BorderLayout.CENTER);
- 
+		
+		// Grouping the radio buttons
+		ButtonGroup group = new ButtonGroup();
+		group.add(rb1);
+		group.add(rb2);
+		
+		// Setting up buttons to perform actions
 		btn.addActionListener(this);
 		chk.addActionListener(this);
+		rb1.addActionListener(this);
+		rb2.addActionListener(this);
 		
 		setDefaultCloseOperation(DISPOSE_ON_CLOSE);
 	}
  
-	/**
-	 * The program    
-	 * @param args the program start up parameters, not used.
-	 */
 	public static void main(String[] args)
 	{
+		// Create the frame
 		GUIDriver program = new GUIDriver();
 
 		program.setLocation(200, 200);
@@ -50,12 +75,6 @@ public class GUIDriver extends JFrame implements ActionListener
 		program.setVisible(true);
 	}
 
-	/**
-	 * Each non abstract class that implements the ActionListener
-	 * must have this method.
-	 * 
-	 * @param e the action event.
-	 */
 	public void actionPerformed(ActionEvent e)
 	{
 		if (e.getSource() == btn)
