@@ -10,14 +10,19 @@ public class GUIDriver extends JFrame implements ActionListener
 	
 	JLabel lbl = new JLabel("Program");
 	JButton btn = new JButton("START");
-	JCheckBox chk = new JCheckBox("Check");
+	//JCheckBox chk = new JCheckBox("Check");
 	JTextArea text = new JTextArea();
 	JPanel itemsPanel = new JPanel();
 	JPanel allPanel = new JPanel();
-	JRadioButton rb1 = new JRadioButton("ON", true);
-	JRadioButton rb2 = new JRadioButton("OFF", false);
+	JRadioButton rb1 = new JRadioButton("UP", true);
+	JRadioButton rb2 = new JRadioButton("DOWN", false);
 	
-	// Menu Materials
+	// ComboBox; Used instead of menu
+	String[] items = {"Message", "Move", "Scroll", "Key Press", "Mouse"};
+	JComboBox cb = new JComboBox(items);
+	
+	// Menu Materials (UNUSED)
+	/*
 	JMenuBar menuBar = new JMenuBar();
 	JMenu menu = new JMenu("Actions");
 	JMenuItem miMESG = new JMenuItem("Message");
@@ -25,20 +30,25 @@ public class GUIDriver extends JFrame implements ActionListener
 	JMenuItem miSCROLL = new JMenuItem("Scroll");
 	JMenuItem miKEY = new JMenuItem("Key press");
 	JMenuItem miMOUSE = new JMenuItem("Mouse");
-
-
+	*/
 	public GUIDriver()
 	{
 		// Label
 		Font font = new Font("Dialog", Font.BOLD, 30);
 		lbl.setFont(font);
+		lbl.setHorizontalAlignment(JLabel.CENTER);
 		
-		// Menu creation
-		menuBar.add(menu);
+		
+		// Menu creation (Not Used)
+		// menuBar.add(menu);
+		
+		// ComboBox
+		cb.setSelectedIndex(0);
 		
 		// Adding items to the frame
 		itemsPanel.setLayout(new FlowLayout());
-		itemsPanel.add(chk);
+		//itemsPanel.add(chk);
+		itemsPanel.add(cb);
 		itemsPanel.add(btn);
 		itemsPanel.add(rb1);
 		itemsPanel.add(rb2);
@@ -47,23 +57,23 @@ public class GUIDriver extends JFrame implements ActionListener
 		allPanel.add(itemsPanel, BorderLayout.SOUTH);
 		allPanel.add(text, BorderLayout.CENTER);
 		allPanel.add(lbl, BorderLayout.NORTH);
-
 		getContentPane().add(allPanel, BorderLayout.CENTER);
 		
 		// Grouping the radio buttons
 		ButtonGroup group = new ButtonGroup();
 		group.add(rb1);
 		group.add(rb2);
-		
-		// Setting up buttons to perform actions
+
+		// Setting up buttons to perform actions via ActionListener
 		btn.addActionListener(this);
-		chk.addActionListener(this);
-		rb1.addActionListener(this);
-		rb2.addActionListener(this);
+		//chk.addActionListener(this);
+		//rb1.addActionListener(this);
+		//rb2.addActionListener(this);
+		cb.addActionListener(this);
 		
 		setDefaultCloseOperation(DISPOSE_ON_CLOSE);
 	}
- 
+
 	public static void main(String[] args)
 	{
 		// Create the frame
@@ -78,10 +88,37 @@ public class GUIDriver extends JFrame implements ActionListener
 	public void actionPerformed(ActionEvent e)
 	{
 		if (e.getSource() == btn)
-			text.setText("A button click");
-		else if (e.getSource() == chk)
-			text.setText("The checkbox state changed to " + 
-					chk.isSelected());
+		{
+			String cmd = (String)cb.getSelectedItem();
+			if (cmd == "Message")
+			{
+				text.setText("Make a message!");
+			}
+			if (cmd == "Move")
+			{
+				text.setText("Move the mouse!");
+			}
+			if (cmd == "Scroll")
+			{
+				text.setText("Scroll the page!");
+				if (rb1.isSelected())
+				{
+					
+				}
+				else
+				{
+					
+				}
+			}
+			if (cmd == "Key Press")
+			{
+				text.setText("Perform a key stroke!");
+			}
+			if (cmd == "Mouse")
+			{
+				text.setText("Click!");
+			}
+		}
 		else
 			text.setText("E ...?");
 	}
