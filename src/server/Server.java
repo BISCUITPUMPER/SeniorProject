@@ -84,7 +84,7 @@ public class Server
 	 */
 	private StatusCode parseCommand(String cmd) throws IOException
 	{
-		//The tilde (~) is used as a character that seperates portions of the command string (ie coordinates for mouse move or message body)
+		//The tilde (~) is used as a character that separates portions of the command string (ie coordinates for mouse move or message body)
 		String[] cmdBreak = cmd.split("~");
 		if (cmdBreak[0].equalsIgnoreCase("MESG"))
 		{
@@ -156,7 +156,7 @@ public class Server
 				r.exec(cmdBreak[1]);	
 			}
 			catch (Exception e)
-			{				
+			{
 				return StatusCode.NO_OPERATION;
 			}
 			return StatusCode.PROG_EXECUTE;
